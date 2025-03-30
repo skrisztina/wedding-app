@@ -1,0 +1,29 @@
+mat-nav-list a {
+    text-decoration: none;
+    color: #5b005b !important;
+    font-size: 20px;
+    border-radius: 0 !important;
+}
+
+.mdc-list-item:focus::before {
+    opacity: 0 !important;
+}
+
+.active-list-item {
+    background-color: #ffabf3;
+    color: #5b005b !important;
+    font-weight: bold;
+}
+
+mat-nav-list {
+    min-width: 200px;
+    color: #5b005b;
+}
+
+mat-icon{
+    color: #5b005b;
+}
+
+a span{
+    color: #5b005b;
+}
