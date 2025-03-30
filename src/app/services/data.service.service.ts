@@ -27,7 +27,7 @@ export class DataServiceService {
 
   reservations: Reservation[] = [
     new Reservation(1, 1, 2, "2025-03-29", "2025-03-29", 100),
-    new Reservation(2, 3, 1, "2025-01-11", "225-01-12", 150),
+    new Reservation(2, 3, 1, "2025-01-11", "2025-01-12", 150),
     new Reservation(3, 2, 4, "2025-08-05", "2025-08-06", 80),
     new Reservation(4, 5, 3, "2025-09-10", "2025-09-11", 200),
     new Reservation(5, 4, 5, "2025-06-15", "2025-06-15", 120)
