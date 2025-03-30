@@ -50,4 +50,8 @@ export class DataServiceService {
   getReservations(): Reservation[] {
     return this.reservations;
   }
+
+  addResertvation(reservation: Reservation){
+    this.reservations.push(reservation);
+  }
 }

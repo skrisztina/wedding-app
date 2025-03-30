@@ -1,1 +1,24 @@
+<h1>Esküvői helyszínek</h1>
+@if (venues.length > 0) {
+    @for (venue of venues; track $index) {
+        <div class="venue-container">
+            <mat-card class="venue-card">
+                <img mat-card-image [src] = "venue.imageUrls[0]" alt="Helyszín kép">
+                <mat-card-content>
+                    <h3>{{venue.name}}</h3>
+                    <p>{{venue.location}}</p>
+                    <p>{{venue.price}}</p>
+                    <p>{{venue.description}}</p>
+                    <button mat-button (click)="onVenueSelect(venue)">Részletek</button>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    }
+}
 
+@else {
+    <div class="no-venues-found">
+        <mat-icon>info</mat-icon>
+        <p>Nincs elérhető esküvői helyszín.</p>
+    </div>
+}

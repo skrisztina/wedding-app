@@ -1,1 +1,33 @@
-<p>reserve-venue works!</p>
+@if (venue) {
+    <div class="venue-container">
+        <h2>{{venue.name}}</h2>
+        <img [src] = "venue.imageUrls[0]" alt="Helyszín kép">
+        <p>{{venue.location}}</p>
+        <p>{{venue.price}}</p>
+        <p>{{venue.capacity}}</p>
+        <p>{{venue.description}}</p>
+    </div>
+
+    <div>
+        <form [formGroup] = "reservationForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <mat-label>Kezdő dátum</mat-label>
+                <input matInput [matDatepicker] = "startPicker" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Végdátum</mat-label>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Vendégek száma</mat-label>
+                <input matInput formControlName="guestCount" type="number" min="2" max="{{venue.capacity}}">
+              </mat-form-field>
+              <button mat-raised-button color="primary" type="submit" [disabled]="reservationForm.invalid">Foglalás</button>
+        </form>
+    </div>
+    
+}
