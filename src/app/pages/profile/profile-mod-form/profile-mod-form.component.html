@@ -1,0 +1,17 @@
+<h2>Személyes adatok módosítása</h2>
+<form [formGroup]="userForm" (ngSubmit)="updateUser()">
+    <mat-form-field>
+      <mat-label>Név</mat-label>
+      <input matInput formControlName="name" type="text"/>
+    </mat-form-field>
+  
+    
+  
+    <mat-form-field>
+      <mat-label>Telefonszám</mat-label>
+      <input matInput formControlName="phone" type="text"/>
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" type="submit">Módosítás</button>
+  </form>
+  

@@ -1,1 +1,26 @@
-<p>profile works!</p>
+<h1>Profil</h1>
+<div *ngIf="!user">
+    <p>A felhasználói adatok nem találhatók.</p>
+  </div>
+  
+  <div *ngIf="user">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <mat-card-title>Adataid</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <img mat-card-image [src] = "defaultImage" alt="Profile Image">
+        <p><strong>Név:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Nem:</strong> {{ user.gender }}</p>
+        <p><strong>Telefon:</strong> {{ user.phone }}</p>
+      </mat-card-content>
+    </mat-card>
+  
+
+    <app-profile-mod-form
+        [user]="user"
+        (userUpdated)="updateUser($event)">
+    </app-profile-mod-form>
+    </div>
+  

@@ -1,12 +1,19 @@
 <h1>Foglalások</h1>
-<table mat-table [dataSource]="reservations">
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Aktuális foglalások</mat-panel-title>
+  </mat-expansion-panel-header>
+  <table mat-table [dataSource]="futureReservations">
     <!-- Oszlopok -->
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
         Törlés
       </th>
       <td mat-cell *matCellDef="let row">
-        <mat-checkbox></mat-checkbox>
+        <mat-checkbox (change)="onCheckboxChange(row.id)"
+        [checked]="isChecked(row.id)">
+      </mat-checkbox>
       </td>
     </ng-container>
   
@@ -35,15 +42,86 @@
       <td mat-cell *matCellDef="let row">{{ row.guestCount }}</td>
     </ng-container>
   
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Módosítás </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button
+        [ngClass] = "{'disabled': isPastReservation(row)}"
+        [disabled]="isChecked(row.id)">
+          <mat-icon>border_color</mat-icon>
+        </button>
+      </td>
     </ng-container>
   
     <!-- Tábla fejrész -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   
     <!-- Tábla sorok -->
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+    [ngClass]="{'red-text': isChecked(row.id), 'line-through': isChecked(row.id)}"></tr>
   </table>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Múltbéli foglalások</mat-panel-title>
+  </mat-expansion-panel-header>
+  <table mat-table [dataSource]="pastReservations">
+    <!-- Oszlopok -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        Törlés
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (change)="onCheckboxChange(row.id)"
+        [checked]="isChecked(row.id)">
+      </mat-checkbox>
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="venueName">
+      <th mat-header-cell *matHeaderCellDef> Helyszín </th>
+      <td mat-cell *matCellDef="let row">{{ getVenueName(row.venueId) }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef> Kezdő dátum </th>
+      <td mat-cell *matCellDef="let row">{{ row.startDate |dateFormat }} <td>
+    </ng-container>
+  
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef> Vég dátum </th>
+      <td mat-cell *matCellDef="let row">{{ row.endDate | dateFormat }} <td>
+    </ng-container>
+  
+    <ng-container matColumnDef="guestCount">
+      <th mat-header-cell *matHeaderCellDef> Vendégek száma </th>
+      <td mat-cell *matCellDef="let row">{{ row.guestCount }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Módosítás </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button
+        [ngClass]="{'disabled': isPastReservation(row)}">
+          <mat-icon>border_color</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <!-- Tábla fejrész -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  
+    <!-- Tábla sorok -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+    [ngClass]="{'red-text': isChecked(row.id), 'line-through': isChecked(row.id)}"></tr>
+  </table>
+</mat-expansion-panel>
+
+
   

@@ -1,0 +1,11 @@
+button.disabled {
+    pointer-events: none; /* Nem reagál a kattintásokra */
+  }
+
+  .red-text {
+    color: red;
+  }
+
+  .line-through {
+    text-decoration: line-through;
+  }
