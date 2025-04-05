@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div class="loginForm">
+    <h1>Bejelentkezés</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <mat-label for="email">Email</mat-label>
+            <input matInput id="email" formControlName="email" type="email" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Jelszó</mat-label>
+            <input matInput id="password" formControlName="password" type="password" />
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit">Bejelentkezés</button>
+    </form>
+</div>
+<div class="notRegisteredContainer">
+    <p>Még nincs fiókod? A gombra kattintva pillanatok alatt csinálhatsz egyet!</p>
+    <button mat-raised-button color="primary" (click)="onToRegister()">Regisztráció</button>
+</div>

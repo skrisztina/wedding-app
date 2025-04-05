@@ -18,11 +18,11 @@ export class DataServiceService {
   ];
 
   users: User[] = [
-    new User(1, "Kovács Péter", "Férfi", "peret.kovax@example.com", "$2a$10$SqKQepg/uULWfDV4R4hogO25IlAKDIp4.vy7cov2JrtaB4MbUvF8y", "06301234567"),
-    new User(2, "Nagy Anna", "Nő", "anna.nagy@example.com", "$2a$10$iqDcXlhv9nwquAnoEdDjw./9/Ttk/fgv/Reu1G7ekCRsyXbYO7L6q", "06201234567"),
-    new User(3, "Szabó Bence", "Férfi", "bence.szabo@example.com", "$2a$10$rhRcSkioKLMIOCjr23B8HOpgifEtG0TLQy.Ershc7hOA9Fh.x1w4G", "06701234567"),
-    new User(4, "Tóth Eszter", "Nő", "eszter.toth@example.com", "$2a$10$x445d7onpgHj7/s28LTc2uLJTi.sKWkc7ZH9lRkSuvrPP.o0QASLa", "06309876543"),
-    new User(5, "Horváth Dávid", "Férfi", "david.horvath@example.com", "$2a$10$y5epwlEKwutRmhmBzALsT.X4LQAFOoY/mB/2q.CcRxV8VoPp6uUja", "06209876543")
+    new User(1, "Kovács Péter", "Férfi", "peter.kovacs@example.com", "peterpassword", "06301234567", ""),
+    new User(2, "Nagy Anna", "Nő", "anna.nagy@example.com", "annapassword", "06201234567", ""),
+    new User(3, "Szabó Bence", "Férfi", "bence.szabo@example.com", "bencepassword", "06701234567", ""),
+    new User(4, "Tóth Eszter", "Nő", "eszter.toth@example.com", "eszterpassword", "06309876543", ""),
+    new User(5, "Horváth Dávid", "Férfi", "david.horvath@example.com", "davidpassword", "06209876543", "")
   ];
 
   reservations: Reservation[] = [
@@ -53,5 +53,26 @@ export class DataServiceService {
 
   addResertvation(reservation: Reservation){
     this.reservations.push(reservation);
+  }
+
+  getUsers(): User[]{
+    return this.users;
+  }
+
+  checkIfUserExists(email: string): boolean{
+    return this.users.some(user => user.email === email);
+  }
+
+  addUser(user: User){
+    this.users.push(user);
+  }
+
+  loginUser(email: string, password: string): boolean{
+    const user =  this.users.some(user => user.email === email && user.password === password);
+    return user !== undefined;
+  }
+
+  getUserByEmail(email: string): User | undefined{
+    return this.users.find(user => user.email === email);
   }
 }

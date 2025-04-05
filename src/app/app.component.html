@@ -20,9 +20,18 @@
             <li><a routerLink="home">Főoldal</a></li>
             <li><a routerLink="wedding-venues">Esküvői helyszínek</a></li>
             <li><a routerLink="reservations">Foglalások</a></li>
-            <li><a routerLink="profile/id:1">Profil</a></li>
-            <li><a routerLink="login">Bejelentkezés</a></li>
-            <li><a routerLink="register">Regisztráció</a></li>
+            <li *ngIf="loggedInUser">
+                <a [routerLink]="['/profile', 'id:' + loggedInUser?.id]">Profil</a>
+              </li>
+              <li *ngIf="!loggedInUser">
+                <a routerLink="login">Bejelentkezés</a>
+              </li>
+              <li *ngIf="!loggedInUser">
+                <a routerLink="register">Regisztráció</a>
+              </li>
+              <li *ngIf="loggedInUser">
+                <a (click)="logout()">Kijelentkezés</a>
+              </li>
         </ul>
       </nav>
         </mat-toolbar>

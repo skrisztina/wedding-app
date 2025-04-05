@@ -11,16 +11,20 @@
         <mat-icon>event_seat</mat-icon>
         <span matListItemTitle>Foglalások</span>
     </a>
-    <a mat-list-item routerLink="/profile/id:1" routerLinkActive="active-list-item" (click)="closeMenu()">
+    <a mat-list-item *ngIf="loggedInUser" [routerLink]="['/profile', 'id:' + loggedInUser?.id]" (click)="closeMenu()">
         <mat-icon>person</mat-icon>
-        <span matListItemTitle>Profil</span>
-    </a>
-    <a mat-list-item routerLink="/login" routerLinkActive="active-list-item" (click)="closeMenu()">
+        <span>Profil</span>
+      </a>
+      <a mat-list-item *ngIf="!loggedInUser" routerLink="/login" (click)="closeMenu()">
         <mat-icon>login</mat-icon>
-        <span matListItemTitle>Bejelentkezés</span>
-    </a>
-    <a mat-list-item routerLink="/register" routerLinkActive="active-list-item" (click)="closeMenu()">
+        <span>Bejelentkezés</span>
+      </a>
+      <a mat-list-item *ngIf="!loggedInUser" routerLink="/register" (click)="closeMenu()">
         <mat-icon>person_add</mat-icon>
-        <span matListItemTitle>Regisztráció</span>
-    </a>
+        <span>Regisztráció</span>
+      </a>
+      <a mat-list-item *ngIf="loggedInUser" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Kijelentkezés</span>
+      </a>
 </mat-nav-list>

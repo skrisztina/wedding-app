@@ -3,12 +3,13 @@ import { DataServiceService } from '../../services/data.service.service';
 import { Venue } from '../../models/venue.model';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-wedding-venues',
-  imports: [MatCardModule, MatIconModule],
+  imports: [MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './wedding-venues.component.html',
   styleUrl: './wedding-venues.component.scss'
 })

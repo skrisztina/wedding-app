@@ -9,10 +9,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Reservation } from '../../models/reservation.model';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-reserve-venue',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatNativeDateModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatNativeDateModule, MatButtonModule],
   templateUrl: './reserve-venue.component.html',
   styleUrl: './reserve-venue.component.scss'
 })
@@ -68,6 +69,7 @@ export class ReserveVenueComponent implements OnInit{
         this.dataService.addResertvation(reservation);
 
         this.reservationForm.reset();
+        alert('Sikeres foglalás.');
       } else{
         alert('A kiválasztott időszakban már van foglalás a helyszínen.');
       }
