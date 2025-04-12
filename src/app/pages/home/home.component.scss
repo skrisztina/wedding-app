@@ -3,9 +3,7 @@
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 40px 20px;
+    padding: 20px 20px;
     text-align: center;
     z-index: 1000;
 }
@@ -14,7 +12,7 @@
 p {
     color: #666;
     font-size: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .tasks {
@@ -24,4 +22,16 @@ p {
 
 .home-card{
     background-color: #fff;
+}
+
+.main-img {
+    max-width: 400px;
+    max-height: 300px;
+    margin: 5px auto;
+}
+
+h1 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #8a8a8a;
 }

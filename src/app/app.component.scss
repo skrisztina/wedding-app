@@ -1,3 +1,7 @@
+body{
+    background-color: white;
+}
+
 nav {
     display: flex;
     justify-content: flex-end;
@@ -41,7 +45,7 @@ mat-sidenav {
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
     .menu-toggle-button {
         display: block;
     }
@@ -49,4 +53,17 @@ mat-sidenav {
     nav ul {
         display: none;
     }
+}
+
+.mat-drawer-container{
+    background-color: white;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+}
+
+::ng-deep .mat-mdc-raised-button:not(:disabled) {
+    background-color: #ffabf3 !important;
+    color: #5b005b !important;
 }

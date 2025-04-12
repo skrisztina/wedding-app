@@ -6,8 +6,9 @@
                 <img mat-card-image [src] = "venue.imageUrls[0]" alt="Helyszín kép">
                 <mat-card-content>
                     <h3>{{venue.name}}</h3>
+                    <p>Értékelés: {{getAvgRating(venue.id) | number: '1.1-1'}} /5.0</p>
                     <p>{{venue.location}}</p>
-                    <p>{{venue.price}}</p>
+                    <p>{{venue.price}} Ft/fő</p>
                     <p>{{venue.description}}</p>
                     <button mat-button (click)="onVenueSelect(venue)">Részletek</button>
                 </mat-card-content>

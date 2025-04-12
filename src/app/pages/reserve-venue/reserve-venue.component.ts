@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Venue } from '../../models/venue.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { DataServiceService } from '../../services/data.service.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -10,10 +10,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Reservation } from '../../models/reservation.model';
 import {MatButtonModule} from '@angular/material/button';
+import { LoginUser } from '../../models/loginUser.model';
+import { UserService } from '../../services/user.service';
+import { Review } from '../../models/review.model';
+import { CommonModule } from '@angular/common';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { DateFormatPipe } from '../../pipes/date-format.pipe';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-reserve-venue',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatNativeDateModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatNativeDateModule, MatButtonModule, CommonModule, MatGridListModule, DateFormatPipe],
   templateUrl: './reserve-venue.component.html',
   styleUrl: './reserve-venue.component.scss'
 })
@@ -21,8 +28,11 @@ export class ReserveVenueComponent implements OnInit{
   @Input() venue: Venue | null = null;
   reservationForm: FormGroup;
   reservations: Reservation[];
+  loggedInUser : LoginUser | null = null;
+  reviews: Review[] = [];
+  users: User[] = [];
 
-  constructor(private route: ActivatedRoute, private dataService: DataServiceService, private fb: FormBuilder){
+  constructor(private route: ActivatedRoute, private dataService: DataServiceService, private fb: FormBuilder, private userService: UserService ){
     this.reservationForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
@@ -35,6 +45,11 @@ export class ReserveVenueComponent implements OnInit{
   ngOnInit(): void {
       const venueId = +this.route.snapshot.paramMap.get('id')!;
       this.venue = this.dataService.getVenues().find(v => v.id == venueId) || null;
+      if(this.venue !== null){
+        this.reviews = this.dataService.getReviewsByVenue(this.venue?.id);
+      }
+
+      this.users = this.dataService.getUsers();
       
       if (this.venue) {
         // Ha van helyszín, beállítjuk a maximum vendégek számát
@@ -44,6 +59,9 @@ export class ReserveVenueComponent implements OnInit{
           Validators.max(this.venue.capacity) // Beállítjuk a dinamikus validátort
         ]);
         this.reservationForm.get('guestCount')?.updateValueAndValidity(); // Érvényesítjük újra
+        this.userService.currentUser$.subscribe(user => {
+          this.loggedInUser = user;
+        })
       }
   }
 
@@ -74,6 +92,21 @@ export class ReserveVenueComponent implements OnInit{
         alert('A kiválasztott időszakban már van foglalás a helyszínen.');
       }
     }
+  }
+
+  getAvgRating(venueId: number): number {
+    if(this.reviews.length === 0){
+      return 0;
+    }
+    const venueReviews = this.reviews.filter(review => review.venueId === venueId);
+    const totalRating = venueReviews.reduce((acc, review) => acc+review.rating, 0);
+
+    return totalRating/ venueReviews.length;
+  }
+
+  getUserNameById(userId: number): string{
+    const user = this.users.find(u => u.id === userId);
+    return user? user.name : 'Ismeretlen felhasználó';
   }
 
 }

@@ -18,17 +18,20 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Jelszó</mat-label>
-            <input matInput id="password" formControlName="password" type="password" />
+            <input matInput id="password" formControlName="password" [type]="showPassword ? 'text' : 'password'" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Jelszó megerősítése</mat-label>
-            <input matInput id="confirmPassword" formControlName="confirmPassword" type="password" />
+            <input matInput id="confirmPassword" formControlName="confirmPassword" [type]="showPassword ? 'text' : 'password'" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Telefon</mat-label>
             <input matInput id="phone" formControlName="phone" type="text" />
           </mat-form-field>
-          <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Regisztráció</button>
+          <button type="button" mat-icon-button (click)="togglePasswordVisibility()">
+            <mat-icon>{{showPassword ? 'visibility_off': 'visibility'}}</mat-icon>
+          </button>
+          <button mat-raised-button color="primary" type="submit">Regisztráció</button>
     </form>
 </div>
 

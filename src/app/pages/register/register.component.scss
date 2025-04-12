@@ -1,3 +1,51 @@
 .container{
     background-color: white;
 }
+
+.register-form {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #fefefe;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.register-form h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #8a8a8a;
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+    color: white !important;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    .register-form {
+      padding: 16px;
+      margin: 20px;
+    }
+  }
+
+  mat-label{
+    color: #8a8a8a;
+  }  
+
+  ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: #8a8a8a !important;
+  }
+
+ ::ng-deep div.mat-mdc-select-panel {
+    background-color: white !important;
+  }
+
+ ::ng-deep .mat-mdc-select-value {
+    color: #8a8a8a !important;
+ }

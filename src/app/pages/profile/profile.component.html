@@ -1,15 +1,15 @@
 <h1>Profil</h1>
-<div *ngIf="!user">
+@if (!user) {
+  <div>
     <p>A felhasználói adatok nem találhatók.</p>
   </div>
-  
+} 
+
+@else {
   <div *ngIf="user">
     <mat-card class="profile-card">
-      <mat-card-header>
-        <mat-card-title>Adataid</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
-        <img mat-card-image [src] = "defaultImage" alt="Profile Image">
+        <img mat-card-image src = "user-images/default-user-image.jpg" alt="Profile Image">
         <p><strong>Név:</strong> {{ user.name }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>Nem:</strong> {{ user.gender }}</p>
@@ -23,4 +23,5 @@
         (userUpdated)="updateUser($event)">
     </app-profile-mod-form>
     </div>
+}
   

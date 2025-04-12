@@ -9,18 +9,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent{
   registerForm: FormGroup;
   users: User[];
+  showPassword: boolean = false;
 
   constructor(private router: Router, private dataService: DataServiceService, private fb: FormBuilder, private route: ActivatedRoute){
     this.registerForm = this.fb.group({
@@ -68,6 +70,10 @@ export class RegisterComponent{
     } else {
       alert ("Invalid űrlap.")
     }
+  }
+
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
   }
 
 }

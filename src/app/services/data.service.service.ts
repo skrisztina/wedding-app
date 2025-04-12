@@ -10,11 +10,11 @@ import { Review } from '../models/review.model';
 export class DataServiceService {
 
   venues: Venue[] = [
-    new Venue(1, "Romantikus kastély", "Budapest", 200, 4000, [], "Egy gyönyörű kastély a Duna partján, amely eleganciát és romantikát sugároz"),
-    new Venue(2, "Tóparti kert", "Velence", 100, 3500, [], "Egy csodálatos tóparti helyszín, ahol a természet közelsége felejthetetlen élményt nyújt."),
-    new Venue(3, "Modern Lovas tanya", "Debrecen", 250, 4500, [], "Elegáns és modern lovas tanya, ahol a legfontosabb napját a természet és a fennséges lovaink társaságában töltheti."),
-    new Venue(4, "Hegyi Panorámás szőlőbirtok", "Eger", 150, 4000, [], "Festői hegyi kilátás, természetközeli esküvői élmény, finom kézműves borok."),
-    new Venue(5, "Városi sportcsarnok", "Szeged", 300, 2500, [], "Egyszerű, de nagyszerű, könnyen személyre és alkalomra szabható, tágas rendezvényterem, kiváló megvilágítással.")
+    new Venue(1, "Romantikus kastély", "Budapest", 200, 4000, ["venue-images/castle-venue.jpg"], "Egy gyönyörű kastély a Duna partján, amely eleganciát és romantikát sugároz"),
+    new Venue(2, "Tóparti kert", "Velence", 100, 3500, ["venue-images/lake-venue.jpg"], "Egy csodálatos tóparti helyszín, ahol a természet közelsége felejthetetlen élményt nyújt."),
+    new Venue(3, "Modern Lovas tanya", "Debrecen", 250, 4500, ["venue-images/horse-venue.jpg"], "Elegáns és modern lovas tanya, ahol a legfontosabb napját a természet és a fennséges lovaink társaságában töltheti."),
+    new Venue(4, "Hegyi Panorámás szőlőbirtok", "Eger", 150, 4000, ["venue-images/mountain-venue.jpg"], "Festői hegyi kilátás, természetközeli esküvői élmény, finom kézműves borok."),
+    new Venue(5, "Városi sportcsarnok", "Szeged", 300, 2500, ["venue-images/sportshall-venue.jpg"], "Egyszerű, de nagyszerű, könnyen személyre és alkalomra szabható, tágas rendezvényterem, kiváló megvilágítással.")
   ];
 
   users: User[] = [
@@ -38,7 +38,7 @@ export class DataServiceService {
     new Review(2, 1, 3, 4, "Nagyon szép, de lehetne nagyobb a parkoló.", "2025-02-06"),
     new Review(3, 4, 2, 5, "A tóparti esküvőnk felejthetetlen élmény volt!", "2025-03-30"),
     new Review(4, 3, 5, 4, "Gyönyörű helyszín, jó kiszolgálás", "2025-03-12"),
-    new Review(5, 5, 4, 5, "Csodálatos panoráma, örökké szóló élmény.", "2025-02-20")
+    new Review(5, 5, 4, 5, "Csodálatos panoráma, örökre szóló élmény.", "2025-02-20")
   ];
 
   constructor() { }
@@ -81,5 +81,13 @@ export class DataServiceService {
     if(index !== -1){
       this.users[index] = { ...this.users[index], ...user};
     }
+  }
+
+  getReviewsByVenue(venueId: number){
+    return this.reviews.filter(review => review.venueId === venueId);
+  }
+
+  getReviews(): Review[]{
+    return this.reviews;
   }
 }

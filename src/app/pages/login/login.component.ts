@@ -9,16 +9,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { UserService } from '../../services/user.service';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  showPassword: boolean = false;
 
   constructor(private router: Router, private dataService: DataServiceService, private fb: FormBuilder, private route: ActivatedRoute, private userService: UserService){
     this.loginForm = this.fb.group({
@@ -51,5 +53,9 @@ export class LoginComponent {
 
   onToRegister(){
     this.router.navigate(['/register']);
+  }
+
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
   }
 }

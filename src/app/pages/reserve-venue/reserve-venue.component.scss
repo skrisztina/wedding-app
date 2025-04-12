@@ -1,0 +1,179 @@
+/* Általános stílusok */
+.venue-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    max-width: 60%;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .venue-container h2 {
+    font-size: 2rem;
+    color: #666;
+    margin-bottom: 10px;
+    text-align: center;
+    vertical-align: auto;
+  }
+  
+  .venue-container img {
+    max-width: 70%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    vertical-align: center;
+  }
+  
+  .venue-container p {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+  
+  /* Formázás a form elemekhez */
+  form {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  mat-form-field {
+    width: 80%;
+    margin-bottom: 15px;
+  }
+  
+  mat-form-field mat-label {
+    font-weight: bold;
+    color: #444;
+  }
+  
+  mat-form-field input {
+    padding: 10px;
+    font-size: 1rem;
+  }
+  
+  button {
+    margin-top: 10px;
+    width: 60%;
+    padding: 12px;
+    font-size: 1.1rem;
+  }
+  
+  button:disabled {
+    background-color: #e0e0e0;
+    color: #9e9e9e;
+  }
+  
+  /* Figyelmeztetés a nem bejelentkezett felhasználók számára */
+  p {
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  
+  /* Ha a felhasználó nincs bejelentkezve, jelenjen meg a figyelmeztetés */
+  .no-login-warning {
+    display: block;
+    color: #d32f2f;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  
+  /* Reszponzív design: Ha az oldal szélessége kisebb, mint 600px */
+  @media (max-width: 600px) {
+    .venue-container {
+      padding: 10px;
+    }
+  
+    .venue-container h2 {
+      font-size: 1.5rem;
+    }
+  
+    .venue-container p {
+      font-size: 1rem;
+    }
+  
+    form {
+      padding: 15px;
+    }
+  
+    mat-form-field input {
+      font-size: 0.9rem;
+    }
+  
+    button {
+      font-size: 1rem;
+      padding: 10px;
+    }
+    
+    .review-container {
+      grid-template-columns: 1fr;
+      padding: 0.5rem;
+  
+      .review-card {
+        padding: 0.75rem;
+      }
+    }
+  }
+  ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
+    color: #666 !important;
+  }
+
+  .reserve-info{
+    font-size: 0.9rem !important;
+    font-weight: normal !important;
+    color: #5b005b !important;
+  }
+
+  .reviews-container {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .review-card {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-grid-list {
+    margin-top: 20px;
+  }
+  
+  mat-grid-tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .review-card p {
+    margin: 5px 10px;
+    color: #666 !important;
+    font-weight: normal !important;
+  }
+  
+
+  .reviews-container h3{
+    color: #666;
+  }

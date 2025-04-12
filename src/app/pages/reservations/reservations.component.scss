@@ -3,9 +3,64 @@ button.disabled {
   }
 
   .red-text {
-    color: red;
+    color: red !important;
   }
 
   .line-through {
     text-decoration: line-through;
+  }
+
+  h1{
+    color: #8a8a8a;
+    margin-left: 30px;
+  }
+
+  .mat-expansion-panel {
+    border-color: #fed6f8;
+    border-width: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    max-width: 80%;
+    background-color: white;
+  }
+
+  .mat-expansion-panel-header-title {
+    color: #3e3e3e;
+  }
+
+  ::ng-deep .mat-expansion-indicator svg {
+    fill: #3e3e3e !important;
+  }
+
+  .mat-mdc-table {
+    background-color: white;
+  }
+
+  .mat-mdc-header-row {
+    color: #5b005b;
+  }
+
+  .mat-mdc-cell {
+    border-bottom-color: #9a8d95 ;
+  }
+
+  .mat-mdc-row {
+    color: #5b005b;
+  }
+
+  .mat-expansion-panel-content {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important; 
+  }
+
+  @media (max-width: 790px) {
+    .mat-expansion-panel-content {
+      overflow-x: auto !important;
+    }
+  }
+
+  .mat-header-row, .mat-row {
+    display: table;
   }

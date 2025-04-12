@@ -1,0 +1,58 @@
+/* Általános beállítások */
+.loginForm, .notRegisteredContainer {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #fefefe;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Címsor */
+  .loginForm h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #8a8a8a;
+  }
+  
+  /* Űrlap mezők */
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+    color: white !important;
+  }
+
+  mat-label{
+    color: #8a8a8a;
+  }  
+  
+  /* Gombok */
+  button {
+    width: 100%;
+  }
+  
+  /* Regisztrációs szöveg */
+  .notRegisteredContainer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .notRegisteredContainer p {
+    margin-bottom: 12px;
+    color: #555;
+    margin-top: 5px;
+  }
+  
+  /* Reszponzivitás */
+  @media (max-width: 480px) {
+    .loginForm, .notRegisteredContainer {
+      padding: 16px;
+      margin: 20px;
+    }
+  }
+
+  ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: #8a8a8a !important;
+  }
+  

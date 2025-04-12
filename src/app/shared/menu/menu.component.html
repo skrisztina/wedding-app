@@ -1,30 +1,37 @@
 <mat-nav-list>
     <a mat-list-item routerLink="/home" routerLinkActive="active-list-item" (click)="closeMenu()">
         <mat-icon>home</mat-icon>
-        <span matListItemTitle>Főoldal</span>
+        <span>Főoldal</span>
     </a>
     <a mat-list-item routerLink="/wedding-venues" routerLinkActive="active-list-item" (click)="closeMenu()">
         <mat-icon>location_on</mat-icon>
-        <span matListItemTitle>Esküvői helyszínek</span>
+        <span>Esküvői helyszínek</span>
     </a>
     <a mat-list-item routerLink="/reservations" routerLinkActive="active-list-item" (click)="closeMenu()">
         <mat-icon>event_seat</mat-icon>
-        <span matListItemTitle>Foglalások</span>
+        <span>Foglalások</span>
     </a>
-    <a mat-list-item *ngIf="loggedInUser" [routerLink]="['/profile', 'id:' + loggedInUser?.id]" (click)="closeMenu()">
-        <mat-icon>person</mat-icon>
-        <span>Profil</span>
-      </a>
-      <a mat-list-item *ngIf="!loggedInUser" routerLink="/login" (click)="closeMenu()">
-        <mat-icon>login</mat-icon>
-        <span>Bejelentkezés</span>
-      </a>
-      <a mat-list-item *ngIf="!loggedInUser" routerLink="/register" (click)="closeMenu()">
-        <mat-icon>person_add</mat-icon>
-        <span>Regisztráció</span>
-      </a>
-      <a mat-list-item *ngIf="loggedInUser" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Kijelentkezés</span>
-      </a>
+    @switch (!!loggedInUser) {
+      @case (true) {
+        <a mat-list-item [routerLink]="['/profile', 'id:' + loggedInUser?.id]" (click)="closeMenu()">
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
+        </a>
+        <a mat-list-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Kijelentkezés</span>
+        </a>
+      }
+      @case (false) {
+        <a mat-list-item routerLink="/login" (click)="closeMenu()">
+          <mat-icon>login</mat-icon>
+          <span>Bejelentkezés</span>
+        </a>
+        <a mat-list-item routerLink="/register" (click)="closeMenu()">
+          <mat-icon>person_add</mat-icon>
+          <span>Regisztráció</span>
+        </a>
+      }
+    }
+      
 </mat-nav-list>
