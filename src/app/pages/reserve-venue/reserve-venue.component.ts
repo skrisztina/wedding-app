@@ -52,13 +52,12 @@ export class ReserveVenueComponent implements OnInit{
       this.users = this.dataService.getUsers();
       
       if (this.venue) {
-        // Ha van helyszín, beállítjuk a maximum vendégek számát
         this.reservationForm.get('guestCount')?.setValidators([
           Validators.required,
           Validators.min(1),
-          Validators.max(this.venue.capacity) // Beállítjuk a dinamikus validátort
+          Validators.max(this.venue.capacity)
         ]);
-        this.reservationForm.get('guestCount')?.updateValueAndValidity(); // Érvényesítjük újra
+        this.reservationForm.get('guestCount')?.updateValueAndValidity();
         this.userService.currentUser$.subscribe(user => {
           this.loggedInUser = user;
         })
@@ -67,7 +66,6 @@ export class ReserveVenueComponent implements OnInit{
 
   onSubmit(){
     if (this.reservationForm.valid && this.venue) {
-      // A foglalás feldolgozása
       const reservationData = this.reservationForm.value;
       const lastId = this.reservations[this.reservations.length-1].id + 1;
 
@@ -77,7 +75,6 @@ export class ReserveVenueComponent implements OnInit{
         const newStartDate = new Date(reservationData.startDate);
         const newEndDate = new Date(reservationData.endDate);
   
-        // Ellenőrizzük, hogy a két időszak átfedi-e egymást
         return (newStartDate < existingEndDate && newEndDate > existingStartDate);
       });
 

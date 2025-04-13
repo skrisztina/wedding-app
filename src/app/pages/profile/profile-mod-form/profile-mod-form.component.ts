@@ -53,7 +53,7 @@ export class ProfileModFormComponent implements OnInit, OnChanges{
         ...this.userForm.value
       };
   
-      this.userUpdated.emit(updatedUser); // Itt közvetlenül a létrehozott objektumot küldöd
+      this.userUpdated.emit(updatedUser);
     }
   }
 }

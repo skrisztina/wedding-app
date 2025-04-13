@@ -1,4 +1,3 @@
-/* Általános stílusok */
 .venue-container {
     margin-left: auto;
     margin-right: auto;
@@ -35,7 +34,6 @@
     margin: 8px 0;
   }
   
-  /* Formázás a form elemekhez */
   form {
     margin-left: auto;
     margin-right: auto;
@@ -78,8 +76,7 @@
     background-color: #e0e0e0;
     color: #9e9e9e;
   }
-  
-  /* Figyelmeztetés a nem bejelentkezett felhasználók számára */
+
   p {
     color: #d32f2f;
     font-weight: bold;
@@ -87,7 +84,6 @@
     margin-top: 10px;
   }
   
-  /* Ha a felhasználó nincs bejelentkezve, jelenjen meg a figyelmeztetés */
   .no-login-warning {
     display: block;
     color: #d32f2f;
@@ -96,7 +92,6 @@
     font-weight: bold;
   }
   
-  /* Reszponzív design: Ha az oldal szélessége kisebb, mint 600px */
   @media (max-width: 600px) {
     .venue-container {
       padding: 10px;

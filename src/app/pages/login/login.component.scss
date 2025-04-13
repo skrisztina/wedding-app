@@ -1,4 +1,3 @@
-/* Általános beállítások */
 .loginForm, .notRegisteredContainer {
     max-width: 400px;
     margin: 40px auto;
@@ -8,14 +7,12 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
   
-  /* Címsor */
   .loginForm h1 {
     text-align: center;
     margin-bottom: 24px;
     color: #8a8a8a;
   }
   
-  /* Űrlap mezők */
   mat-form-field {
     width: 100%;
     margin-bottom: 16px;
@@ -26,12 +23,10 @@
     color: #8a8a8a;
   }  
   
-  /* Gombok */
   button {
     width: 100%;
   }
   
-  /* Regisztrációs szöveg */
   .notRegisteredContainer {
     text-align: center;
     margin-top: 20px;
@@ -44,7 +39,6 @@
     margin-top: 5px;
   }
   
-  /* Reszponzivitás */
   @media (max-width: 480px) {
     .loginForm, .notRegisteredContainer {
       padding: 16px;

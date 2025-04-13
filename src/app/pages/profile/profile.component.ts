@@ -22,7 +22,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class ProfileComponent implements OnInit {
   loggedInUser : LoginUser | null = null;
   user : User | undefined;
-  //defaultImage = '../../assets/default-user-image.jpg'  //ezt még ki kell javítani
 
   constructor(private userService: UserService, private dataService: DataServiceService, private router: Router){}
 

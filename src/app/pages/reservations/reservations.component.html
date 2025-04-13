@@ -5,7 +5,7 @@
     <mat-panel-title>Aktuális foglalások</mat-panel-title>
   </mat-expansion-panel-header>
   <table mat-table [dataSource]="futureReservations">
-    <!-- Oszlopok -->
+
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
         Törlés
@@ -53,10 +53,8 @@
       </td>
     </ng-container>
   
-    <!-- Tábla fejrész -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   
-    <!-- Tábla sorok -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
     [ngClass]="{'red-text': isChecked(row.id), 'line-through': isChecked(row.id)}"></tr>
   </table>
@@ -67,7 +65,7 @@
     <mat-panel-title>Múltbéli foglalások</mat-panel-title>
   </mat-expansion-panel-header>
   <table mat-table [dataSource]="pastReservations">
-    <!-- Oszlopok -->
+
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
         Törlés
@@ -114,10 +112,8 @@
       </td>
     </ng-container>
   
-    <!-- Tábla fejrész -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   
-    <!-- Tábla sorok -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
     [ngClass]="{'red-text': isChecked(row.id), 'line-through': isChecked(row.id)}"></tr>
   </table>
