@@ -38,7 +38,10 @@ export class DataServiceService {
     new Review(2, 1, 3, 4, "Nagyon szép, de lehetne nagyobb a parkoló.", "2025-02-06"),
     new Review(3, 4, 2, 5, "A tóparti esküvőnk felejthetetlen élmény volt!", "2025-03-30"),
     new Review(4, 3, 5, 4, "Gyönyörű helyszín, jó kiszolgálás", "2025-03-12"),
-    new Review(5, 5, 4, 5, "Csodálatos panoráma, örökre szóló élmény.", "2025-02-20")
+    new Review(5, 5, 4, 5, "Csodálatos panoráma, örökre szóló élmény.", "2025-02-20"),
+    new Review(6, 1, 1, 5, "Csodálatos panoráma, örökre szóló élmény.", "2025-02-20"),
+    new Review(7, 4, 1, 5, "Csodálatos panoráma, örökre szóló élmény.", "2025-02-20"),
+    new Review(8, 5, 1, 5, "Csodálatos panoráma, örökre szóló élmény.", "2025-02-20")
   ];
 
   constructor() { }

@@ -12,7 +12,7 @@
 
     <div class="reviews-container">
       <h3>Értékelések:</h3>
-      <mat-grid-list cols="3" rowHeight="4:3" gutterSize="16px">
+      <mat-grid-list cols="3" rowHeight="4:2" gutterSize="16px">
         <mat-grid-tile *ngFor="let review of reviews" [colspan]="1" rowspan="1">
           <div class="review-card">
             <p>Felhasználó: {{getUserNameById(review.userId)}}</p>
@@ -24,7 +24,8 @@
       </mat-grid-list>
     </div>
 
-    <div>
+    <div class="reserve-container">
+      <h3>Foglalás:</h3>
         <form [formGroup] = "reservationForm" (ngSubmit)="onSubmit()">
             <mat-form-field>
                 <mat-label>Kezdő dátum</mat-label>
