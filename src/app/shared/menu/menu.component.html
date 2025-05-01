@@ -11,7 +11,7 @@
         <mat-icon>event_seat</mat-icon>
         <span>Foglalások</span>
     </a>
-    @switch (!!loggedInUser) {
+    @switch (isLoggedIn) {
       @case (true) {
         <a mat-list-item [routerLink]="['/profile', 'id:' + loggedInUser?.id]" (click)="closeMenu()">
           <mat-icon>person</mat-icon>

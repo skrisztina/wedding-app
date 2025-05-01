@@ -14,6 +14,9 @@
           </button>
           <button mat-raised-button color="primary" type="submit">Bejelentkezés</button>
     </form>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
 </div>
 <div class="notRegisteredContainer">
     <p>Még nincs fiókod? A gombra kattintva pillanatok alatt csinálhatsz egyet!</p>

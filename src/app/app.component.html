@@ -21,7 +21,7 @@
             <li><a routerLink="wedding-venues">Esküvői helyszínek</a></li>
             <li><a routerLink="reservations">Foglalások</a></li>
 
-            @switch (!!loggedInUser) {
+            @switch (isLoggedIn) {
               @case (true) {
                 <li>
                   <a [routerLink]="['/profile', 'id:' + loggedInUser?.id]">Profil</a>
