@@ -13,14 +13,21 @@
         <p><strong>Név:</strong> {{ user.name }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>Nem:</strong> {{ user.gender }}</p>
-        <p><strong>Telefon:</strong> {{ user.phone }}</p>
+        <p><strong>Telefon:</strong> {{ user.phone | phoneFormat}}</p>
       </mat-card-content>
     </mat-card>
+
+    <div class="button-container">
+      <button mat-raised-button color="accent" (click)="toggleEditForm()">
+        {{ showEditForm ? 'Bezárás' : 'Profil módosítása' }}
+      </button>
+    </div>
   
 
     <app-profile-mod-form
         [user]="user"
-        (userUpdated)="updateUser($event)">
+        (userUpdated)="updateUser($event)"
+        [hidden]="!showEditForm">
     </app-profile-mod-form>
     </div>
 }
