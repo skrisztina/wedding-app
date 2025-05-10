@@ -3,6 +3,7 @@ import { Firestore, collectionData, collection, doc, getDoc } from '@angular/fir
 import { from, Observable } from 'rxjs';
 import { Venue } from '../models/venue.model';
 import { map } from 'rxjs/operators';
+import { DocumentData, DocumentSnapshot } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,6 @@ export class VenueService {
 
   getVenueById(venueId: string): Observable<Venue> {
     const venueRef = doc(this.firestore, `Venues/${venueId}`);
-    // A getDoc egy Promise-t ad vissza, ezért azt Observable-vé kell alakítani a `from` operátorral
     return from(getDoc(venueRef)).pipe(
       map((docSnap) => {
         if (docSnap.exists()) {
@@ -48,4 +48,18 @@ export class VenueService {
       })
     );
   }
+
+getVenueNameById(venueId: string): Observable<string> {
+  const venueDocRef = doc(this.firestore, 'Venues', venueId);
+  return from(getDoc(venueDocRef)).pipe(
+    map((docSnap: DocumentSnapshot<DocumentData>) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        return data?.['name'] || 'Ismeretlen helyszín';
+      } else {
+        return 'Ismeretlen helyszín';
+      }
+    })
+  );
+}
 }

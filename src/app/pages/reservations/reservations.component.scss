@@ -64,3 +64,16 @@ button.disabled {
   .mat-header-row, .mat-row {
     display: table;
   }
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  max-width: 200px;
+  border-radius: 25px;
+  background-color: #ffabf3 !important;
+  color: #5b005b !important;
+}
