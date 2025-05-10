@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
-import { Observable, map } from 'rxjs';
+import { Firestore, collection, collectionData, query, where, addDoc } from '@angular/fire/firestore';
+import { Observable, map, from } from 'rxjs';
 import { Review } from '../models/review.model';
 
 @Injectable({
@@ -35,4 +35,29 @@ export class ReviewService {
       })
     );
   }
+
+  addReview(review: Review): Observable<boolean> {
+  const reviewRef = collection(this.firestore, 'Reviews');
+
+  const formatDate = (date: string): string => {
+    const newDate = new Date(date);
+    const year = newDate.getFullYear();
+    const month = (newDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = newDate.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  const formattedDate = formatDate(review.date);
+
+  return from(addDoc(reviewRef, {
+    userId: review.userId,
+    venueId: review.venueId,
+    rating: review.rating,
+    comment: review.comment,
+    date: formattedDate
+  })).pipe(
+    map(() => true)
+  );
+}
+
 }

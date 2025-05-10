@@ -7,11 +7,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { VenueService } from '../../../services/venue.service';
-import { Venue } from '../../../models/venue.model';
 
 
 @Component({
   selector: 'app-reservation-mod-form',
+  standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule,
     MatDatepickerModule, MatNativeDateModule
   ],

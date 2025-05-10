@@ -67,8 +67,7 @@
 </div>
 
 <app-reservation-mod-form
-  *ngIf="editingReservation"
-  [reservation]="editingReservation"
+  *ngIf="isReviewFormVisible"
   (save)="onReservationSave($event)"
   (cancel)="onReservationCancel()">
 </app-reservation-mod-form>
@@ -81,7 +80,7 @@
   </mat-expansion-panel-header>
 
   <!-- Radio gombok csoportja -->
-  <mat-radio-group>
+  <mat-radio-group [(ngModel)]="selectedReservationId">
     <table mat-table [dataSource]="pastReservations">
 
       <ng-container matColumnDef="select">
@@ -126,10 +125,23 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-      </tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </mat-radio-group>
+
+  <!-- Show the button only if a reservation is selected -->
+  <div class="button-container" *ngIf="selectedReservationId">
+    <button mat-raised-button color="accent" (click)="writeReview()">
+      Vélemény írása
+    </button>
+  </div>
+
+  <app-add-review-form
+  *ngIf="selectedReservationId"
+  [reviewData]="reviewData"
+  (save)="onReviewSubmit($event)"
+  (cancel)="onReviewCancel()">
+  </app-add-review-form>
 </mat-expansion-panel>
 
 

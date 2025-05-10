@@ -1,1 +1,18 @@
-<p>add-review-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <mat-form-field appearance="fill">
+    <mat-label>Értékelés:</mat-label>
+    <mat-select formControlName="rating">
+    <mat-option *ngFor="let rate of ratings" [value]="rate">{{ rate }}</mat-option>
+  </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Megjegyzés:</mat-label>
+    <input matInput type="text" formControlName="comment">
+  </mat-form-field>
+
+  <div class="form-buttons">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Mentés</button>
+    <button mat-raised-button color="warn" (click)="onCancel()" type="button">Mégse</button>
+  </div>
+</form>

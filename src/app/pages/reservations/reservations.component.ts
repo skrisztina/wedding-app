@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
 import { Reservation } from '../../models/reservation.model';
 import { Venue } from '../../models/venue.model';
@@ -15,18 +15,20 @@ import { UserService } from '../../services/user.service';
 import { VenueService } from '../../services/venue.service';
 import { Router } from '@angular/router';
 import {MatRadioModule} from '@angular/material/radio';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ReservationModFormComponent } from './reservation-mod-form/reservation-mod-form.component';
-
+import { Review } from '../../models/review.model';
+import { ReviewService } from '../../services/review.service';
+import { AddReviewFormComponent } from "./add-review-form/add-review-form.component";
 
 
 @Component({
   selector: 'app-reservations',
-  imports: [MatCheckboxModule, MatTableModule, DateFormatPipe, MatIconModule, MatExpansionModule, CommonModule, MatRadioModule, ReactiveFormsModule, ReservationModFormComponent],
+  imports: [MatCheckboxModule, MatTableModule, DateFormatPipe, MatIconModule, MatExpansionModule, CommonModule, MatRadioModule, ReactiveFormsModule, ReservationModFormComponent, FormsModule, AddReviewFormComponent],
   templateUrl: './reservations.component.html',
   styleUrl: './reservations.component.scss'
 })
-export class ReservationsComponent implements OnInit{
+export class ReservationsComponent implements OnInit, OnDestroy{
   loggedInUser : User | null = null;
   private authSubscription?: Subscription;
   private userSubscription?: Subscription;
@@ -37,10 +39,14 @@ export class ReservationsComponent implements OnInit{
   selectedReservations: Set<string> = new Set();
   reservationVenues: Map<string, string> = new Map();
   editingReservation: Reservation | null = null;
+  selectedReservationId: string | null = null;
+  reviewData: { userId: string, venueId: string } | null = null;
+  isReviewFormVisible: boolean = false;
 
 
   constructor(private reservationService: ReservationService, private authService: AuthService,
-    private userService: UserService, private router: Router, private venueService: VenueService
+    private userService: UserService, private router: Router, private venueService: VenueService,
+    private reviewService: ReviewService
   ){}
 
   ngOnInit(): void {
@@ -158,5 +164,53 @@ onReservationCancel(): void {
   this.editingReservation = null;
 }
 
+writeReview(){
+     if (this.selectedReservationId) {
+      const selectedReservation = this.pastReservations.find(reservation => reservation.id === this.selectedReservationId);
+      if (selectedReservation) {
+        this.reviewData = {
+          userId: this.loggedInUser?.id ?? '',
+          venueId: selectedReservation.venueId,
+        };
+        this.isReviewFormVisible = true;
+      }
+    }
+  }
+
+  onReviewSubmit(review: Review){
+    if (this.loggedInUser && this.reviewData) {
+      const newReview = new Review(
+        "",
+        this.loggedInUser.id,
+        this.reviewData.venueId,
+        review.rating,
+        review.comment,
+        new Date().toISOString() // Aktuális dátum
+      );
+
+      this.reviewService.addReview(newReview).subscribe({
+        next: () => {
+          console.log('Vélemény mentve.');
+          this.reviewData = null;
+          this.selectedReservationId = null;
+          this.isReviewFormVisible = false;
+        },
+        error: (err) => {
+          console.error('Hiba a vélemény mentésekor:', err);
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+      this.editingReservation = null;
+      this.selectedReservationId = null;
+      this.isReviewFormVisible = false;
+  }
+
+  onReviewCancel(){
+    this.selectedReservationId = null;
+    this.isReviewFormVisible = false;
+  }
 
 }
