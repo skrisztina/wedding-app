@@ -1,11 +1,11 @@
 export class Venue{
     constructor(
-        public id: number,
+        public id: string,
         public name: string,
         public location: string,
         public capacity: number,
         public price: number,
-        public imageUrls: string[],
+        public image: string,
         public description: string
     ){}
 }

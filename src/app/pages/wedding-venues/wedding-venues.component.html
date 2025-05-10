@@ -3,10 +3,15 @@
     @for (venue of venues; track $index) {
         <div class="venue-container">
             <mat-card class="venue-card">
-                <img mat-card-image [src] = "venue.imageUrls[0]" alt="Helyszín kép">
+                <img mat-card-image [src] = "venue.image" alt="Helyszín kép">
                 <mat-card-content>
                     <h3>{{venue.name}}</h3>
-                    <p>Értékelés: {{getAvgRating(venue.id) | number: '1.1-1'}} /5.0</p>
+                    <p *ngIf="avgRatings.has(venue.id)">
+                        Értékelés: {{ avgRatings.get(venue.id)! | number:'1.1-1' }} /5.0
+                    </p>
+                    <p *ngIf="!avgRatings.has(venue.id)">
+                        Értékelés: 0.0/5.0
+                    </p>
                     <p>{{venue.location}}</p>
                     <p>{{venue.price}} Ft/fő</p>
                     <p>{{venue.description}}</p>

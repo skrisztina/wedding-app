@@ -36,7 +36,7 @@ export class ReservationsComponent implements OnInit{
 
   }
 
-  getVenueName(venueId: number):string{
+  getVenueName(venueId: string):string{
     const venue = this.venues.find(v => v.id === venueId);
     return venue ? venue.name : 'N/A';
   }

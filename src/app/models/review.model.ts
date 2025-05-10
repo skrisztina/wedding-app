@@ -1,8 +1,8 @@
 export class Review{
     constructor(
-        public id: number,
-        public userId: number,
-        public venueId: number,
+        public id: string,
+        public userId: string,
+        public venueId: string,
         public rating: number,
         public comment: string,
         public date: string

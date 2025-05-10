@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar} from '@angular/material/snack-bar';
+import { User } from '../../models/user.model';
 
 
 @Component({
@@ -20,20 +21,32 @@ import { MatSnackBar} from '@angular/material/snack-bar';
 export class MenuComponent implements OnInit, OnDestroy {
 
   @Input() sidenav!: MatSidenav;
-  loggedInUser: LoginUser | null = null;
+  loggedInUser: User | null = null;
   isLoggedIn = false;
   private authSubscription?: Subscription;
+  private userSubscription?: Subscription;
+
   constructor(private userService: UserService, private authService: AuthService,
     private snackBar: MatSnackBar
   ){}
 
   ngOnInit():void{
-    this.authSubscription = this.authService.currentUser.subscribe(user => {
-      this.isLoggedIn = !!user;
+    this.authSubscription = this.authService.isLoggedIn().subscribe(firebaseUser => {
+      this.isLoggedIn = !!firebaseUser;
       localStorage.setItem('isLoggedIn', this.isLoggedIn ? 'true' : 'false');
-      this.userService.currentUser$.subscribe(user => {
-        this.loggedInUser = user;
-      });
+
+      if(firebaseUser){
+        this.userSubscription = this.userService.getUser().subscribe({
+          next: user => this.loggedInUser = user,
+          error: err => {
+            console.error('Hiba a felhasználó betöltésekor:', err);
+            this.loggedInUser = null;
+          }
+        });
+      } else {
+        this.loggedInUser = null;
+      }
+      
     });
   }
 
@@ -46,7 +59,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   logout(){
     this.authService.signOut().then(() => {
       this.loggedInUser = null;
-      this.userService.clearUser();
       this.closeMenu();
       this.snackBar.open('Sikeres kijelentkezés!', 'Bezár', {
         duration: 3000,
@@ -57,6 +69,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
+    this.userSubscription?.unsubscribe();
   }
 
 }

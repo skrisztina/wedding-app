@@ -24,7 +24,7 @@
             @switch (isLoggedIn) {
               @case (true) {
                 <li>
-                  <a [routerLink]="['/profile', 'id:' + loggedInUser?.id]">Profil</a>
+                  <a [routerLink]="['/profile', 'id:' + user?.id]">Profil</a>
                 </li>
                 <li>
                   <a (click)="logout()">Kijelentkezés</a>

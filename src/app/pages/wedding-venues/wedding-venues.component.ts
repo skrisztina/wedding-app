@@ -1,5 +1,4 @@
 import { Component , OnInit, Output, EventEmitter, Input} from '@angular/core';
-import { DataServiceService } from '../../services/data.service.service';
 import { Venue } from '../../models/venue.model';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -7,6 +6,9 @@ import {MatButtonModule} from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Review } from '../../models/review.model';
 import { CommonModule } from '@angular/common';
+import { VenueService } from '../../services/venue.service';
+import { ReviewService } from '../../services/review.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -18,29 +20,29 @@ import { CommonModule } from '@angular/common';
 export class WeddingVenuesComponent implements OnInit{
   venues: Venue[] = [];
   reviews: Review[] = [];
+  avgRatings: Map<string, number> = new Map();
   @Input() title: string = 'Esküvői helyszínek';
   @Output() venueSelected: EventEmitter<Venue> = new EventEmitter<Venue>();
 
-  constructor(private dataService: DataServiceService, private router: Router){}
+  constructor(private venueService: VenueService, private router: Router, private reviewService: ReviewService){}
 
   ngOnInit(): void {
-      this.venues = this.dataService.getVenues();
-      this.reviews = this.dataService.getReviews();
+      this.venueService.getVenues().subscribe(venues => {
+    this.venues = venues;
+
+    venues.forEach(venue => {
+      this.reviewService.getAvgRating(venue.id).subscribe(avg => {
+        this.avgRatings.set(venue.id, avg);
+      });
+    });
+  });
   }
 
   onVenueSelect(venue: Venue){
     this.router.navigate(['/reserve-venue', venue.id]);
   }
 
-  getAvgRating(venueId: number): number {
-    if(this.reviews.length === 0){
-      return 0;
-    }
-    const venueReviews = this.reviews.filter(review => review.venueId === venueId);
-    const totalRating = venueReviews.reduce((acc, review) => acc+review.rating, 0);
-
-    return totalRating/ venueReviews.length;
-
-
+  getAvgRating(venueId: string): number {
+    return this.avgRatings.get(venueId) ?? 0;
   }
 }

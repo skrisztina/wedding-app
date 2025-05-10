@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { User } from '../../models/user.model';
-import { DataServiceService } from '../../services/data.service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +8,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../../models/user.model';
 
 
 
@@ -21,10 +22,11 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class RegisterComponent{
   registerForm: FormGroup;
-  users: User[];
   showPassword: boolean = false;
 
-  constructor(private router: Router, private dataService: DataServiceService, private fb: FormBuilder, private route: ActivatedRoute){
+  constructor(private router: Router, private fb: FormBuilder, private route: ActivatedRoute,
+    private authService: AuthService, private snackBar: MatSnackBar
+  ){
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       gender: ['', Validators.required],
@@ -33,40 +35,68 @@ export class RegisterComponent{
       confirmPassword: ['', Validators.required],
       phone: ['', Validators.pattern(/^(\+36|06)\s?(\d{2})\s?(\d{3})\s?(\d{4})$/)]
     })
-    this.users = this.dataService.getUsers();
   }
   
 
   onSubmit(){
+    let signupError: string;
     if(this.registerForm.valid){
-      const userData = this.registerForm.value;
-      const lastId = this.users[this.users.length-1].id + 1;
+      const { name, gender, email, password, confirmPassword, phone } = this.registerForm.value;
 
-      if(this.dataService.checkIfUserExists(userData.email)){
-        alert('Ez az email cím már regisztrálva van.');
-        return;
-      }
-
-      if(userData.password !== userData.confirmPassword){
+      if(password !== confirmPassword){
         alert('A jelszónak és a megerősítésének meg kell egyeznie!');
         return;
       }
 
-      if(userData.name.length < 5){
+      if(name.length < 5){
         alert("A névnek minimum 5 karakternek kell lennie.");
         return;
       }
 
-      if(userData.password.length < 8){
+      if(password.length < 8){
         alert("A jelszónak minimum 8 karakternek kell lennie.");
         return;
       }
 
-      const newUser = new User( lastId, userData.name, userData.gender, userData.email, userData.password, userData.phone, "");
+        const userData : Partial<User> = {
+          name: name,
+          gender: gender,
+          email: email,
+          phone: phone
+        };
 
-      this.dataService.addUser(newUser);
-      alert("Sikeres regisztráció.");
+        console.log('Mentésre kerülő userData:', userData);
+
+        this.authService.singUp(email, password, userData)
+        .then(() => {
+          this.snackBar.open('Sikeres regisztráció!', 'Bezár', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
       this.router.navigate(['/login']);
+    })
+        .catch(error =>{
+          console.error('Hiba regisztráláskor: ', error);
+
+          switch(error.code){
+            case 'auth/email-already-in-use':
+            signupError = 'Ez az email cím már regisztrálva van.';
+            break;
+          case 'auth/invalid-email':
+            signupError = 'Invalid email.';
+            break;
+          case 'auth/weak-password':
+            signupError = 'Gyenge jelszó. Min 8 karakter.';
+            break;
+          default:
+            signupError = 'Hiba a regisztráció során. Próbáld meg később.';
+          }
+
+          this.snackBar.open('Hiba: ' + signupError, 'Bezár', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+    });
     } else {
       alert ("Invalid űrlap.")
     }

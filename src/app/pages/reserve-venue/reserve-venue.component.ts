@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Venue } from '../../models/venue.model';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { DataServiceService } from '../../services/data.service.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -12,11 +11,18 @@ import { Reservation } from '../../models/reservation.model';
 import {MatButtonModule} from '@angular/material/button';
 import { LoginUser } from '../../models/loginUser.model';
 import { UserService } from '../../services/user.service';
+import { VenueService } from '../../services/venue.service';
+import { ReviewService } from '../../services/review.service';
 import { Review } from '../../models/review.model';
 import { CommonModule } from '@angular/common';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { Subscription, map } from 'rxjs'
+import { ReservationService } from '../../services/reservation.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reserve-venue',
@@ -27,83 +33,102 @@ import { User } from '../../models/user.model';
 export class ReserveVenueComponent implements OnInit{
   @Input() venue: Venue | null = null;
   reservationForm: FormGroup;
-  reservations: Reservation[];
-  loggedInUser : LoginUser | null = null;
+  reservations: Reservation[] = [];
+  loggedInUser : User | null = null;
+  private authSubscription?: Subscription;
+  private userSubscription?: Subscription;
   reviews: Review[] = [];
   users: User[] = [];
+  avgRatings: number = 0;
+  reviewUsers: Map<string, string> = new Map();
 
-  constructor(private route: ActivatedRoute, private dataService: DataServiceService, private fb: FormBuilder, private userService: UserService ){
+  constructor(private route: ActivatedRoute, private venueService: VenueService, private fb: FormBuilder, private userService: UserService,
+    private authService: AuthService, private reviewService: ReviewService, private reservationService : ReservationService, private router: Router,
+    private snackBar: MatSnackBar
+   ){
     this.reservationForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       guestCount: ['', [Validators.required, Validators.min(2)]]
     })
-    this.reservations = this.dataService.getReservations();
 
   }
 
   ngOnInit(): void {
-      const venueId = +this.route.snapshot.paramMap.get('id')!;
-      this.venue = this.dataService.getVenues().find(v => v.id == venueId) || null;
-      if(this.venue !== null){
-        this.reviews = this.dataService.getReviewsByVenue(this.venue?.id);
+      const venueId = this.route.snapshot.paramMap.get('id');
+      
+      if(venueId){
+        this.venueService.getVenueById(venueId).subscribe(venue => {
+          this.venue = venue;
+
+          if(this.venue){
+            this.reservationForm.get('guestCount')?.setValidators([
+              Validators.required,
+              Validators.min(1),
+              Validators.max(this.venue.capacity)
+            ]);
+            this.reservationForm.get('guestCount')?.updateValueAndValidity();
+          }
+        });
+
+         this.reviewService.getReviewsByVenue(venueId).subscribe(reviews => {
+        this.reviews = reviews;
+
+         this.reviews.forEach(review => {
+         this.userService.getUserNameById(review.userId).subscribe(user => {
+        this.reviewUsers.set(review.id, user);
+      });
+    });
+      });
+      this.reviewService.getAvgRating(venueId).subscribe(avg => {
+        this.avgRatings = avg;
+    });
+
+     this.authSubscription = this.authService.isLoggedIn().subscribe(firebaseUser => {
+      if(!firebaseUser){
+        this.router.navigate(['/login']);
+        return;
       }
 
-      this.users = this.dataService.getUsers();
-      
-      if (this.venue) {
-        this.reservationForm.get('guestCount')?.setValidators([
-          Validators.required,
-          Validators.min(1),
-          Validators.max(this.venue.capacity)
-        ]);
-        this.reservationForm.get('guestCount')?.updateValueAndValidity();
-        this.userService.currentUser$.subscribe(user => {
-          this.loggedInUser = user;
-        })
-      }
+      this.userSubscription = this.userService.getUser().subscribe({
+        next: user => this.loggedInUser = user,
+        error: err => {
+          console.error('Hiba a felhasználó adatainak lekérdezésekor: ', err);
+          this.router.navigate(['/login']);
+        }
+      });
+    });
+    }
   }
 
   onSubmit(){
-    if (this.reservationForm.valid && this.venue) {
-      const reservationData = this.reservationForm.value;
-      const lastId = this.reservations[this.reservations.length-1].id + 1;
+    if (this.reservationForm.valid && this.venue && this.loggedInUser) {
+      const { startDate, endDate, guestCount } = this.reservationForm.value;
 
-      const isOverlapping = this.reservations.some(reservation => {
-        const existingStartDate = new Date(reservation.startDate);
-        const existingEndDate = new Date(reservation.endDate);
-        const newStartDate = new Date(reservationData.startDate);
-        const newEndDate = new Date(reservationData.endDate);
-  
-        return (newStartDate < existingEndDate && newEndDate > existingStartDate);
+      this.reservationService.addReservation(this.loggedInUser.id, this.venue.id, startDate, endDate, guestCount)
+      .subscribe(success => {
+        if (success) {
+          this.reservationForm.reset();
+          this.snackBar.open('Sikeres foglalás!', 'Bezár', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+        } else {
+          this.snackBar.open('A kiválasztott időpontban már van foglalás a helyszínen', 'Bezár', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+        }
       });
-
-      if(!isOverlapping){
-        const reservation = new Reservation( lastId, this.venue.id, 1, reservationData.startDate, reservationData.endDate, reservationData.guestCount )
-
-        this.dataService.addResertvation(reservation);
-
-        this.reservationForm.reset();
-        alert('Sikeres foglalás.');
-      } else{
-        alert('A kiválasztott időszakban már van foglalás a helyszínen.');
-      }
     }
   }
 
-  getAvgRating(venueId: number): number {
-    if(this.reviews.length === 0){
-      return 0;
-    }
-    const venueReviews = this.reviews.filter(review => review.venueId === venueId);
-    const totalRating = venueReviews.reduce((acc, review) => acc+review.rating, 0);
-
-    return totalRating/ venueReviews.length;
+  getAvgRating(): number {
+     return this.avgRatings;
   }
 
-  getUserNameById(userId: number): string{
-    const user = this.users.find(u => u.id === userId);
-    return user? user.name : 'Ismeretlen felhasználó';
+  getUserNameById(reviewId: string): string{
+    return this.reviewUsers.get(reviewId) ?? 'Ismeretlen felhasználó';
   }
 
 }

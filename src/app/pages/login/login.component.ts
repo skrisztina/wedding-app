@@ -12,7 +12,6 @@ import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   userSub!: Subscription;
 
-  constructor(private router: Router, private dataService: DataServiceService, private userService: UserService,
+  constructor(private router: Router, private dataService: DataServiceService,
     private fb: FormBuilder, private route: ActivatedRoute, private authService: AuthService, private snackBar: MatSnackBar){
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,18 +45,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(){
     if(this.loginForm.valid){
       const {email, password} = this.loginForm.value;
-
-      if(this.dataService.loginUser(email, password) === false){
-        console.error("Hibás felhasználónév vagy jelszó");
-        return;
-      }
-
-      const user = this.dataService.getUserByEmail(email);
-      if(user === undefined){
-        console.error("Nem található a felhasználó. Lehet azóta törölték.");
-        return;
-      }
-      this.userService.setUser({id: user.id, email: user.email});
       
       this.authService.signIn(email, password)
       .then(()=> {
@@ -84,6 +71,10 @@ export class LoginComponent implements OnInit, OnDestroy {
           default:
             this.errorMessage = "Sikeretlen bejelentkezés.";
         }
+        this.snackBar.open(this.errorMessage, 'Bezár', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
       });
     }
   }

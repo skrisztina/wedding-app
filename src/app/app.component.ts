@@ -12,6 +12,7 @@ import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar} from '@angular/material/snack-bar';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -22,21 +23,31 @@ import { MatSnackBar} from '@angular/material/snack-bar';
 })
 export class AppComponent implements OnInit, OnDestroy{
   title = 'wedding-app';
-  loggedInUser: LoginUser | null = null;
+  user: User | null = null;
   isLoggedIn = false;
   private authSubscription?: Subscription;
+  private userSubscription?: Subscription;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService,
     private snackBar: MatSnackBar
   ){}
 
   ngOnInit():void{
-    this.authSubscription = this.authService.currentUser.subscribe(user => {
-      this.isLoggedIn = !!user;
+    this.authSubscription = this.authService.isLoggedIn().subscribe(firebaseUser => {
+      this.isLoggedIn = !! firebaseUser;
       localStorage.setItem('isLoggedIn', this.isLoggedIn ? 'true' : 'false');
-      this.userService.currentUser$.subscribe(user => {
-        this.loggedInUser = user;
-      });
+
+      if(firebaseUser){
+        this.userSubscription = this.userService.getUser().subscribe({
+          next: user => this.user = user,
+          error: err => {
+            console.error('Hiba a felhazsnáló betöltésekor: ', err);
+            this.user = null;
+          }
+        });
+      } else {
+        this.user = null;
+      }
     });
   }
 
@@ -46,16 +57,17 @@ export class AppComponent implements OnInit, OnDestroy{
 
   logout(){
     this.authService.signOut().then(() => {
-      this.loggedInUser = null;
-      this.userService.clearUser();
+      this.user = null;
       this.snackBar.open('Sikeres kijelentkezés!', 'Bezár', {
         duration: 3000,
         verticalPosition: 'top'
       });
+      this.router.navigate(['/home']);
     });
   }
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
+    this.userSubscription?.unsubscribe();
   }
 }
