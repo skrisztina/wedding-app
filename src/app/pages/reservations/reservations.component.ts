@@ -20,11 +20,13 @@ import { ReservationModFormComponent } from './reservation-mod-form/reservation-
 import { Review } from '../../models/review.model';
 import { ReviewService } from '../../services/review.service';
 import { AddReviewFormComponent } from "./add-review-form/add-review-form.component";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 @Component({
   selector: 'app-reservations',
-  imports: [MatCheckboxModule, MatTableModule, DateFormatPipe, MatIconModule, MatExpansionModule, CommonModule, MatRadioModule, ReactiveFormsModule, ReservationModFormComponent, FormsModule, AddReviewFormComponent],
+  imports: [MatCheckboxModule, MatTableModule, DateFormatPipe, MatIconModule, MatExpansionModule, CommonModule, MatRadioModule, ReactiveFormsModule, ReservationModFormComponent, FormsModule, AddReviewFormComponent, MatSnackBarModule],
   templateUrl: './reservations.component.html',
   styleUrl: './reservations.component.scss'
 })
@@ -42,11 +44,12 @@ export class ReservationsComponent implements OnInit, OnDestroy{
   selectedReservationId: string | null = null;
   reviewData: { userId: string, venueId: string } | null = null;
   isReviewFormVisible: boolean = false;
+  isUpdateFormVisible: boolean = false;
 
 
   constructor(private reservationService: ReservationService, private authService: AuthService,
     private userService: UserService, private router: Router, private venueService: VenueService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService, private snackBar: MatSnackBar
   ){}
 
   ngOnInit(): void {
@@ -109,9 +112,19 @@ export class ReservationsComponent implements OnInit, OnDestroy{
       next: () => {
         console.log(`Foglalás ${reservationId} törölve.`);
         this.selectedReservations.delete(reservationId);
+        this.snackBar.open('Foglalás(ok) skeresen törölve.', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
       },
       error: err => {
         console.error(`Hiba a ${reservationId} törlésénél: `, err);
+        this.snackBar.open('Hiba a foglalás(ok) törlése során.', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
       }
     });
   });
@@ -146,16 +159,28 @@ private loadReservations(): void {
 
 editReservation(reservation: Reservation): void {
   this.editingReservation = { ...reservation }; // másolat
+  this.isUpdateFormVisible = true;
 }
 
 onReservationSave(updated: Reservation): void {
   this.reservationService.updateReservation(updated.id, updated).subscribe({
     next: () => {
       this.editingReservation = null;
+      this.isUpdateFormVisible = false;
+      this.snackBar.open('Foglalás sikeresen módosítva.', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
       this.loadReservations();
     },
     error: err => {
       console.error('Hiba a foglalás mentésekor:', err);
+      this.snackBar.open('Hiba a foglalás módosítása során.', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
     }
   });
 }
@@ -194,9 +219,19 @@ writeReview(){
           this.reviewData = null;
           this.selectedReservationId = null;
           this.isReviewFormVisible = false;
+          this.snackBar.open('Vélemény írása sikeres volt.', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
         },
         error: (err) => {
           console.error('Hiba a vélemény mentésekor:', err);
+          this.snackBar.open('Hiba a vélemény hozzáadása során', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
         }
       });
     }
@@ -206,6 +241,9 @@ writeReview(){
       this.editingReservation = null;
       this.selectedReservationId = null;
       this.isReviewFormVisible = false;
+      this.isUpdateFormVisible = false;
+      this.authSubscription?.unsubscribe();
+      this.userSubscription?.unsubscribe();
   }
 
   onReviewCancel(){

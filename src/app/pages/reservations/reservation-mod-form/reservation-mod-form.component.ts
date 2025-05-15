@@ -19,7 +19,7 @@ import { VenueService } from '../../../services/venue.service';
   styleUrl: './reservation-mod-form.component.scss'
 })
 export class ReservationModFormComponent {
-  @Input() reservation!: Reservation;
+  @Input() reservation: Reservation | null = null;
   @Output() save = new EventEmitter<Reservation>();
   @Output() cancel = new EventEmitter<void>();
 
@@ -39,10 +39,10 @@ export class ReservationModFormComponent {
         const maxGuests = venue.capacity;
 
         this.form = this.fb.group({
-          startDate: [this.reservation.startDate, Validators.required],
-          endDate: [this.reservation.endDate, Validators.required],
+          startDate: [this.reservation?.startDate, Validators.required],
+          endDate: [this.reservation?.endDate, Validators.required],
           guestCount: [
-            this.reservation.guestCount,
+            this.reservation?.guestCount,
             [Validators.required, Validators.min(1), Validators.max(maxGuests)]
           ]
         });
