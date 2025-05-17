@@ -1,85 +1,106 @@
-h1{
-    color: #8a8a8a;
-    margin-left: 30px;
+h1 {
+  color: #8a8a8a;
+  margin-left: 30px;
+
+  @media (max-width: 600px) {
+    text-align: center;
+    margin-left: 0;
+    font-size: 1.5rem;
+  }
 }
 
 .venue-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.venue-card {
+  width: 550px;
+  max-width: 90vw;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  mat-card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
-  
-  .venue-card {
-    width: 550px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background-color: white;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-    mat-card-image {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-  
-    mat-card-content {
-      padding: 16px;
-  
-      h3 {
-        font-size: 1.2rem;
-        color: #333;
-        margin-bottom: 10px;
-      }
-  
-      p {
-        font-size: 1rem;
-        color: #666;
-        margin-bottom: 8px;
-      }
-  
-      button {
-        width: 100%;
-        background-color: #ffabf3;
-        color: #5b005b;
-        font-weight: bold;
-        border-radius: 4px;
-        padding: 10px;
-        transition: background-color 0.3s;
-  
-        &:hover {
-          background-color: #ffabf3;
-        }
-      }
-    }
-  
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-  }
-  
-  .no-venues-found {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    font-size: 1.2rem;
-    color: #333;
-    margin-top: 50px;
-  
-    mat-icon {
-      font-size: 50px;
-      margin-bottom: 20px;
-      color: #ffabf3;
-    }
-  
-    p {
-      font-size: 1.1rem;
+
+  mat-card-content {
+    padding: 16px;
+
+    h3 {
+      font-size: 1.2rem;
       color: #333;
+      margin-bottom: 10px;
+
+      @media (max-width: 600px) {
+        font-size: 1.1rem;
+      }
+    }
+
+    p {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 8px;
+
+      @media (max-width: 600px) {
+        font-size: 0.95rem;
+      }
+    }
+
+    button {
+      width: 100%;
+      background-color: #ffabf3;
+      color: #5b005b;
+      font-weight: bold;
+      border-radius: 4px;
+      padding: 10px;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #ffabf3;
+      }
+
+      @media (max-width: 600px) {
+        padding: 8px;
+        font-size: 0.95rem;
+      }
     }
   }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.no-venues-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #333;
+  margin-top: 50px;
+
+  mat-icon {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #ffabf3;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: #333;
+    padding: 0 20px;
+  }
+}

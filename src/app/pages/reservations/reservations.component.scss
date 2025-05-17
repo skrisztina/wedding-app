@@ -59,6 +59,9 @@ button.disabled {
     .mat-expansion-panel-content {
       overflow-x: auto !important;
     }
+    .table-container table {
+    min-width: 600px;
+  }
   }
 
   .mat-header-row, .mat-row {
@@ -76,4 +79,14 @@ button {
   border-radius: 25px;
   background-color: #ffabf3 !important;
   color: #5b005b !important;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-container table {
+  min-width: 700px; // vagy annyi, amennyi a tartalomhoz kell
 }

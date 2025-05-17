@@ -41,6 +41,7 @@ export class ReserveVenueComponent implements OnInit{
   users: User[] = [];
   avgRatings: number = 0;
   reviewUsers: Map<string, string> = new Map();
+  gridCols: number = 3;
 
   constructor(private route: ActivatedRoute, private venueService: VenueService, private fb: FormBuilder, private userService: UserService,
     private authService: AuthService, private reviewService: ReviewService, private reservationService : ReservationService, private router: Router,
@@ -55,6 +56,8 @@ export class ReserveVenueComponent implements OnInit{
   }
 
   ngOnInit(): void {
+      this.updateGridCols();
+      window.addEventListener('resize', this.updateGridCols.bind(this));
       const venueId = this.route.snapshot.paramMap.get('id');
       
       if(venueId){
@@ -104,6 +107,10 @@ export class ReserveVenueComponent implements OnInit{
     });
     }
   }
+
+  updateGridCols() {
+  this.gridCols = window.innerWidth <= 600 ? 1 : 3;
+}
 
   onSubmit(){
     if (this.reservationForm.valid && this.venue && this.loggedInUser) {

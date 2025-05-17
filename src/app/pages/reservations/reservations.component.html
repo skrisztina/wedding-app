@@ -4,7 +4,8 @@
   <mat-expansion-panel-header>
     <mat-panel-title>Aktuális foglalások</mat-panel-title>
   </mat-expansion-panel-header>
-  <table mat-table [dataSource]="futureReservations">
+  <div class="table-container">
+    <table mat-table [dataSource]="futureReservations">
 
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
@@ -59,6 +60,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
     [ngClass]="{'red-text': isChecked(row.id), 'line-through': isChecked(row.id)}"></tr>
   </table>
+  </div>
 
   <div class="button-container" *ngIf="selectedReservations.size > 0">
   <button mat-raised-button color="accent" (click)="deleteSelected()">
@@ -82,7 +84,8 @@
 
   <!-- Radio gombok csoportja -->
   <mat-radio-group [(ngModel)]="selectedReservationId">
-    <table mat-table [dataSource]="pastReservations">
+    <div class="table-container">
+      <table mat-table [dataSource]="pastReservations">
 
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef> Kiválaszt </th>
@@ -128,6 +131,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    </div>
   </mat-radio-group>
 
   <!-- Show the button only if a reservation is selected -->
