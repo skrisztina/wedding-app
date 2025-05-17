@@ -56,7 +56,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home']);
       })
       .catch(error => {
-        console.error('Login error:', error);
 
         switch(error.code){
           case 'auth/user-not-found':

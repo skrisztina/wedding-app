@@ -76,7 +76,7 @@ export class RegisterComponent{
       this.router.navigate(['/login']);
     })
         .catch(error =>{
-          console.error('Hiba regisztráláskor: ', error);
+
 
           switch(error.code){
             case 'auth/email-already-in-use':

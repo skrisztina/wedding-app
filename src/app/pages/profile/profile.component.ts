@@ -38,7 +38,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userSubscription = this.userService.getUser().subscribe({
         next: user => this.user = user,
         error: err => {
-          console.error('Hiba a felhasználó adatainak lekérdezésekor: ', err);
+          this.snackBar.open('Hiba a felhasználó adatainak betöltésekor.', 'Bezár', {
+            duration: 3000
+          });
           this.router.navigate(['/login']);
         }
       });
@@ -59,7 +61,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.showEditForm = false; // ha el akarod rejteni az űrlapot utána
     },
     error: (err) => {
-      console.error('Hiba a frissítés során:', err);
       this.snackBar.open('Hiba történt a mentés során!', 'Bezár', {
         duration: 3000
       });

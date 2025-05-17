@@ -41,7 +41,10 @@ export class AppComponent implements OnInit, OnDestroy{
         this.userSubscription = this.userService.getUser().subscribe({
           next: user => this.user = user,
           error: err => {
-            console.error('Hiba a felhazsnáló betöltésekor: ', err);
+            this.snackBar.open('Hiba a felhasználó betöltésekor.', 'Bezár', {
+              duration: 3000,
+              verticalPosition: 'top'
+            });
             this.user = null;
           }
         });

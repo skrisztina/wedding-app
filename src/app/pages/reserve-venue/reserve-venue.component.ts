@@ -94,6 +94,10 @@ export class ReserveVenueComponent implements OnInit{
         next: user => this.loggedInUser = user,
         error: err => {
           console.error('Hiba a felhasználó adatainak lekérdezésekor: ', err);
+          this.snackBar.open('Hiba a felhasználó adatainak lekérdezésekor.', 'Bezár', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
           this.router.navigate(['/login']);
         }
       });

@@ -62,7 +62,6 @@ export class ReservationsComponent implements OnInit, OnDestroy{
     this.userSubscription = this.userService.getUser().subscribe({
       next: user => {
         if (!user) {
-          console.error('Nincs bejelentkezett felhasználó.');
           this.router.navigate(['/login']);
           return;
         }
